@@ -20,3 +20,14 @@ export const getListFaq = async (): Promise<IFaq[]> => {
   const result = await pool.query(query);
   return result.rows;
 };
+
+export const deleteFaq = async (id: number): Promise<any[]> => {
+  const query = `
+    delete from faqs
+    where id = $1;
+  `;
+
+  const result = await pool.query(query, [id]);
+
+  return result.rows;
+};

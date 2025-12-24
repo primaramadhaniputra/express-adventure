@@ -3,7 +3,8 @@ import * as faqController from "../controllers/faqController.ts";
 
 const router: Router = express.Router();
 
-router.post("/", faqController["createFaq"]);
 router.get("/", faqController["getListFaq"]);
+router.post("/", faqController["createFaq"]);
+router.delete("/:id", faqController["deleteFaq"]);
 
 export default router;

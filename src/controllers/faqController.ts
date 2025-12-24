@@ -51,3 +51,21 @@ export const getListFaq = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const deleteFaq = async (req: Request, res: Response) => {
+  try {
+    const id = req.params.id;
+
+    await faqService.deleteFaq(Number(id));
+
+    res.status(200).json({
+      success: true,
+      message: "Success delete faq",
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
