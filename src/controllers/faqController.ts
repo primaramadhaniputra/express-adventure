@@ -34,3 +34,20 @@ export const createFaq = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const getListFaq = async (req: Request, res: Response) => {
+  try {
+    const listFaq = await faqService.getListFaq();
+
+    res.status(200).json({
+      success: true,
+      data: listFaq,
+      message: "Success get list faqs",
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

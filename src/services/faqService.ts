@@ -13,3 +13,10 @@ export const createFaq = async (faqData: IFaq): Promise<IFaq> => {
   const result = await pool.query(query, [question, answer]);
   return result.rows[0];
 };
+
+export const getListFaq = async (): Promise<IFaq[]> => {
+  const query = `select * from faqs`;
+
+  const result = await pool.query(query);
+  return result.rows;
+};
