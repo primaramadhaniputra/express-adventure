@@ -15,12 +15,26 @@ export const createFaq = async (req: Request, res: Response) => {
 };
 
 export const getListFaq = async (req: Request, res: Response) => {
-  const listFaq = await faqService.getListFaq();
+  const search = (req.query.search as string) || "";
+  const page = parseInt(req.query.page as string) || 1;
+  const perPage = parseInt(req.query.perPage as string) || 10;
+
+  const offset = (page - 1) * perPage;
+
+  const {rows, total} = await faqService.getListFaq(search, perPage, offset);
+
+  const totalPages = Math.ceil(total / perPage);
 
   res.status(200).json({
     success: true,
-    data: listFaq,
     message: "Success get list faqs",
+    data: rows,
+    meta: {
+      page: page,
+      perPage: perPage,
+      totalPage: totalPages,
+      totalData: total,
+    },
   });
 };
 

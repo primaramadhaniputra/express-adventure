@@ -14,11 +14,34 @@ export const createFaq = async (faqData: IFaq): Promise<IFaq> => {
   return result.rows[0];
 };
 
-export const getListFaq = async (): Promise<IFaq[]> => {
-  const query = `select * from faqs`;
+export const getListFaq = async (
+  search: string,
+  limit: number,
+  offset: number
+) => {
+  const dataQuery = `
+  select * from faqs
+  where question ilike $1
+  order by created_at desc
+  limit $2 offset $3
+  `;
 
-  const result = await pool.query(query);
-  return result.rows;
+  const countQuery = `
+  select count(*) from faqs
+  where question ilike $1
+  `;
+
+  const searchParams = `%${search}%`;
+
+  const [dataResult, countResult] = await Promise.all([
+    pool.query(dataQuery, [searchParams, limit, offset]),
+    pool.query(countQuery, [searchParams]),
+  ]);
+
+  return {
+    rows: dataResult.rows,
+    total: parseInt(countResult.rows[0].count),
+  };
 };
 
 export const deleteFaq = async (id: number): Promise<any[]> => {
