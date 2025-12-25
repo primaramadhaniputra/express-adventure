@@ -6,31 +6,7 @@ import jwt from "jsonwebtoken";
 
 export const register = async (req: Request, res: Response) => {
   try {
-    if (!req.body) {
-      return res.status(400).json({
-        success: false,
-        message: "Field Required",
-      });
-    }
-
     const {username, password, email} = req.body;
-
-    if (!username || !password || !email) {
-      return res.status(400).json({
-        success: false,
-        message: "Field Required",
-      });
-    }
-
-    // validasi fromat email (regex)
-    const emailRegex = /\S+@\S+\.\S+/;
-
-    if (!emailRegex.test(email)) {
-      return res.status(400).json({
-        success: false,
-        message: "Format email not valid",
-      });
-    }
 
     const user = await AuthServices.register({email, username, password});
 
@@ -49,20 +25,7 @@ export const register = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
   try {
-    if (!req.body) {
-      return res.status(400).json({
-        success: false,
-        message: "Field Required",
-      });
-    }
-
     const {password, email} = req.body;
-    if (!password || !email) {
-      return res.status(400).json({
-        success: false,
-        message: "Field Required",
-      });
-    }
 
     // validasi fromat email (regex)
     const emailRegex = /\S+@\S+\.\S+/;
