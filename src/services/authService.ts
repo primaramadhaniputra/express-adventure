@@ -1,6 +1,7 @@
 import pool from "../config/db.ts";
 import {type IAuth} from "../models/authModel.ts";
 import bcrypt from "bcrypt";
+import crypto from "crypto";
 
 export const register = async (createData: IAuth): Promise<IAuth> => {
   const {username, email, password} = createData;
@@ -39,4 +40,32 @@ export const getUserByEmail = async (email: string): Promise<IAuth> => {
   const result = await pool.query(query, [email]);
 
   return result.rows[0];
+};
+
+export const forgotPassword = async (email: string) => {
+  // generate token random
+  const resetToken = crypto.randomBytes(32).toString("hex");
+
+  // has token (agar jika db bocor, hacker tidak bisa lansung pakai tokennya)
+  const hashedToken = crypto
+    .createHash("sha256")
+    .update(resetToken)
+    .digest("hex");
+
+  // set kadaluarsa 15 menit
+  const expires = new Date(Date.now() + 15 * 60 * 1000);
+
+  const query = `
+  update users
+  set reset_password_token = $1,
+      reset_password_expires = $2
+  where email = $3
+  returning id;
+  `;
+
+  const result = await pool.query(query, [hashedToken, expires, email]);
+
+  if (result.rows.length === 0) throw new Error("User not found");
+
+  return hashedToken;
 };

@@ -138,3 +138,36 @@ export const getListUsers = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const forgotPassword = async (req: Request, res: Response) => {
+  try {
+    const {email} = req.body;
+    if (!email) {
+      return res.status(400).json({
+        success: false,
+        message: "Email Required",
+      });
+    }
+
+    const user = await AuthServices.getUserByEmail(email);
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        message: "User not found",
+      });
+    }
+
+    const token = await AuthServices["forgotPassword"](email);
+
+    res.status(200).json({
+      success: true,
+      token,
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};
