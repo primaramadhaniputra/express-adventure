@@ -171,3 +171,27 @@ export const forgotPassword = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const resetPassword = async (req: Request, res: Response) => {
+  try {
+    const {token} = req.query; // Diambil dari ?token=XYZ...
+    const {password} = req.body;
+    if (!token || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "token / password required",
+      });
+    }
+
+    await AuthServices["resetPassword"](token as string, password);
+    res.status(200).json({
+      success: true,
+      message: "Reset password success",
+    });
+  } catch (error: any) {
+    res.status(500).json({
+      success: false,
+      message: error.message,
+    });
+  }
+};

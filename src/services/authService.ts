@@ -67,5 +67,40 @@ export const forgotPassword = async (email: string) => {
 
   if (result.rows.length === 0) throw new Error("User not found");
 
-  return hashedToken;
+  return resetToken;
+};
+
+export const resetPassword = async (token: string, newPassword: string) => {
+  // has token yang datang agar bisa di cocokan dengan di db
+  const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+  // ambil token yang belum expired
+
+  const query = `
+  select id from users
+  where reset_password_token = $1
+  and reset_password_expires > now();
+  `;
+
+  const userResult = await pool.query(query, [hashedToken]);
+
+  if (!userResult.rows.length) throw new Error("Token expired");
+
+  const userId = userResult.rows[0].id;
+
+  // has password baru
+  const salt = await bcrypt.genSalt(10);
+  const hashedPassword = await bcrypt.hash(newPassword, salt);
+  // update password
+
+  const updateQuery = `
+  update users
+  set password = $1,
+        reset_password_token = null,
+        reset_password_expires = null
+  where id = $2
+  `;
+
+  await pool.query(updateQuery, [hashedPassword, userId]);
+  return {success: true};
 };
