@@ -15,6 +15,7 @@ app.use(express.json());
 // Routes
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/faq", authMiddleWare, faqRouter);
+app.use("/api/v1/blog", authMiddleWare, faqRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Typescript With Express");
