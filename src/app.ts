@@ -6,6 +6,7 @@ import express, {
 } from "express";
 import authRouter from "./routes/authRoutes.ts";
 import faqRouter from "./routes/faqRoutes.ts";
+import blogRouter from "./routes/blogRoutes.ts";
 import {authMiddleWare} from "./middleware/authMiddleware.ts";
 
 const app: Express = express();
@@ -15,7 +16,7 @@ app.use(express.json());
 // Routes
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/faq", authMiddleWare, faqRouter);
-app.use("/api/v1/blog", authMiddleWare, faqRouter);
+app.use("/api/v1/blog", authMiddleWare, blogRouter);
 
 app.get("/", (req: Request, res: Response) => {
   res.send("Typescript With Express");

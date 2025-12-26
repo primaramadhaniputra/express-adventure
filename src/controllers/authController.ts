@@ -20,6 +20,7 @@ export const login = async (req: Request, res: Response) => {
   const {password, email} = req.body;
 
   const findUser: IAuth = await AuthServices.getUserByEmail(email);
+
   if (!findUser) {
     const error = new Error("Wrong email / password");
     (error as any).status = 400; // Set status 404 Not Found
@@ -39,6 +40,7 @@ export const login = async (req: Request, res: Response) => {
     id: findUser.id,
     email: findUser.email,
     username: findUser.username,
+    role: findUser.role,
   };
 
   const token = jwt.sign(payload, process.env.JWT_SECRET as string, {
