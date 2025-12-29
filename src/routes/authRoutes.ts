@@ -7,12 +7,10 @@ import {
   registerSchema,
   resetPasswordSchema,
 } from "../validations/authValidations.ts";
-import {authMiddleWare} from "../middleware/authMiddleware.ts";
 import {catchAsync} from "../utils/catchAsync.ts";
 
 const router: Router = express.Router();
 
-router.get("/user", authMiddleWare, catchAsync(AuthControll["getListUsers"]));
 router.post(
   "/register",
   validate(registerSchema),
