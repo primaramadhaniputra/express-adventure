@@ -22,4 +22,24 @@ const storage = multer.diskStorage({
   },
 });
 
-export const upload = multer({storage});
+export const upload = multer({
+  storage,
+  limits: {
+    fileSize: 0.5 * 1024 * 1024, // batas 500kb
+  },
+  fileFilter: (req, file, cb) => {
+    const allowedTypes = /jpeg|jpg|png|webp/;
+    const extname = allowedTypes.test(
+      path.extname(file.originalname).toLowerCase()
+    );
+    const mimeType = allowedTypes.test(file.mimetype);
+
+    if (extname && mimeType) {
+      return cb(null, true);
+    } else {
+      cb(
+        new Error("hanya diperbolehkan mengunggah gambar (jpeg/jpg/png/webp)!")
+      );
+    }
+  },
+});

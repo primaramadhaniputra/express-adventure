@@ -9,10 +9,19 @@ import faqRouter from "./routes/faqRoutes.ts";
 import blogRouter from "./routes/blogRoutes.ts";
 import userRouter from "./routes/userRoutes.ts";
 import {authMiddleWare} from "./middleware/authMiddleware.ts";
+import path from "path";
+import {fileURLToPath} from "url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app: Express = express();
 
 app.use(express.json());
+// Membuat folder 'public' dapat diakses publik
+// Jika imagePath di DB adalah "public/uploads/foto.jpg"
+// Maka bisa diakses di: http://localhost:3000/uploads/foto.jpg
+app.use("/uploads", express.static(path.join(__dirname, "../public/uploads")));
 
 // Routes
 app.use("/api/v1/auth", authRouter);
