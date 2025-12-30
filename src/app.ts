@@ -36,7 +36,6 @@ app.get("/", (req: Request, res: Response) => {
 // Global eror handling
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
   const statusCode = err.status || 500;
-
   res.status(statusCode).json({
     success: false,
     message: err.message || "Internal server error",

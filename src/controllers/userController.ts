@@ -11,6 +11,8 @@ export const updatePhotoProfile = async (req: Request, res: Response) => {
   const imagePath = req.file.path;
   const userId = req.params.id;
 
+  console.log("image path", req.file);
+
   await UserService.updatePhotoProfile(imagePath, Number(userId));
 
   return res.status(200).json({
