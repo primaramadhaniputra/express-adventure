@@ -15,5 +15,15 @@ router.patch(
   uploadCloud.single("photo-profile"),
   catchAsync(UserController["updatePhotoProfile"])
 );
+router.get(
+  "/upload-signature",
+  authMiddleWare,
+  catchAsync(UserController["getUploadSignature"])
+);
+router.patch(
+  "/upload-signature/:id",
+  authMiddleWare,
+  catchAsync(UserController["updatePhotoProfileUsingUploadSignature"])
+);
 
 export default router;
