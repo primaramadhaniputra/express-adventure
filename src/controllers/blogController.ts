@@ -8,7 +8,7 @@ export const createBlog = async (req: Request, res: Response) => {
   const user = await BlogServices["getUserByEmail"](userEmail);
 
   await BlogServices["createBlog"](
-    Number(user.id),
+    Number(user!.id),
     title,
     description,
     content
@@ -25,7 +25,7 @@ export const getUserBlog = async (req: Request, res: Response) => {
 
   const user = await BlogServices["getUserByEmail"](userEmail);
 
-  const results = await BlogServices["getUserBlog"](Number(user.id));
+  const results = await BlogServices["getUserBlog"](Number(user!.id));
 
   return res.status(200).json({
     success: true,
@@ -40,7 +40,7 @@ export const deleteBlog = async (req: Request, res: Response) => {
 
   const user = await BlogServices["getUserByEmail"](userEmail);
 
-  await BlogServices["deleteBlog"](Number(id), Number(user.id));
+  await BlogServices["deleteBlog"](Number(id), Number(user!.id));
 
   return res.status(200).json({
     success: true,

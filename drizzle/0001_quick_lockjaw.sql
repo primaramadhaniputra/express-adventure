@@ -1,0 +1,1 @@
+ALTER TABLE "faqs" RENAME COLUMN "asnwer" TO "answer";
