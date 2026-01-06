@@ -19,7 +19,7 @@ export const register = async (req: Request, res: Response) => {
 export const login = async (req: Request, res: Response) => {
   const {password, email} = req.body;
 
-  const findUser: IAuth = await AuthServices.getUserByEmail(email);
+  const findUser = await AuthServices.getUserByEmail(email);
 
   if (!findUser) {
     const error = new Error("Wrong email / password");
