@@ -11,6 +11,8 @@ import userRouter from "./routes/userRoutes.ts";
 import {authMiddleWare} from "./middleware/authMiddleware.ts";
 import path from "path";
 import {fileURLToPath} from "url";
+import swaggerUi from "swagger-ui-express";
+import {swaggerSpec} from "./config/swagger.ts";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -32,6 +34,8 @@ app.use("/api/v1/blog", authMiddleWare, blogRouter);
 app.get("/", (req: Request, res: Response) => {
   res.send("Typescript With Express");
 });
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
 // Global eror handling
 app.use((err: any, req: Request, res: Response, next: NextFunction) => {
