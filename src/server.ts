@@ -1,7 +1,7 @@
 import app from "./app.ts";
 import {checkDatabaseConnection} from "./config/db.ts";
 
-const port = 3000;
+const port = process.env.PORT || 3000;
 
 // Hubungkan database dulu, baru nyalakan server
 app.listen(port, async () => {
