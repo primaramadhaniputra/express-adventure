@@ -6,7 +6,7 @@
   "scripts": {
     "test": "vitest",
     "start": "node dist/server.js",
-    "dev": "nodemon src/server.ts",
+  "dev": "NODE_OPTIONS='--loader ts-node/esm --no-warnings' nodemon src/server.ts",
     "build": "tsc",
     "deploy": "drizzle-kit push"
   },
